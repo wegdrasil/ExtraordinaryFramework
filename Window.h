@@ -16,17 +16,21 @@ class Window
 public:
 	Window() {}
 	Window(HINSTANCE hInstance, WindowSettings *settings);
-	//virtual LRESULT MsgProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
-
-	static LRESULT CALLBACK WindowProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
-
+	
 	void Init();
 	void ShutDown();
 	HWND GetHWND() { return m_hWnd; }
+	HINSTANCE GetHINSTANCE() { return m_hInstance; }
 
 private:
 	void CreateMyWindow();
 	HRESULT RegisterWindowClass();
-	void HelpMessage(std::string s);
+	
+	static LRESULT CALLBACK WindowProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
+	
+	void HelpMessage(const std::string s);
+
+protected:
+	virtual LRESULT VWindowProc(HWND hWnd, UINT uiMsg, WPARAM wParam, LPARAM lParam);	
 };
 

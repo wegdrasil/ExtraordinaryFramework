@@ -1,7 +1,11 @@
 #include "Window.h"
 
+Window* gWnd;
+
 Window::Window(HINSTANCE hInstance, WindowSettings* settings)
 {
+	gWnd = this;
+
 	m_hInstance = hInstance; 
 	m_sClassName = "ExtraordinaryFrameworkWindowClass";
 	m_Settings = settings;
@@ -12,12 +16,12 @@ Window::Window(HINSTANCE hInstance, WindowSettings* settings)
 //	Window* gWnd = 0;
 //}
 //
-//LRESULT CALLBACK MainWndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
-//{
-//	return gWnd->MsgProc(hwnd, msg, wParam, lParam);
-//}
-
 LRESULT CALLBACK Window::WindowProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
+{
+	return gWnd->VWindowProc(hwnd, msg, wParam, lParam);
+}
+
+LRESULT Window::VWindowProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
 	switch(msg)
 	{	
@@ -46,7 +50,7 @@ HRESULT Window::RegisterWindowClass()
 
 	wc.cbSize			= sizeof(WNDCLASSEX);
 	wc.style			= CS_HREDRAW | CS_VREDRAW;
-	wc.lpfnWndProc		= WindowProc;
+	wc.lpfnWndProc		= WindowProc;                
 	wc.cbClsExtra		= 0;
 	wc.cbWndExtra		= 0;
 	wc.hInstance		= m_hInstance;
@@ -94,15 +98,16 @@ void Window::CreateMyWindow()
 	UpdateWindow(m_hWnd);
 }
 
+//Destroys WINAPI window and releases handler.
 void Window::ShutDown()
 {
-	HelpMessage("shutdown");
 	if(m_hWnd)
 		DestroyWindow(m_hWnd);
 	m_hWnd = nullptr;
 }
 
-void Window::HelpMessage(std::string s)
+//Displays a modal dialog box. 
+void Window::HelpMessage(const std::string s)
 {
 	MessageBox(m_hWnd, (LPCWSTR)s.c_str(), L"HelpMessage", MB_OK);
 }
