@@ -1,5 +1,4 @@
-#ifndef window_h
-#define window_h
+#pragma once
 
 #include <Windows.h>
 #include <string>
@@ -31,4 +30,3 @@ private:
 	void HelpMessage(std::string s);
 };
 
-#endif

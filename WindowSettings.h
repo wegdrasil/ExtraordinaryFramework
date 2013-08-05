@@ -1,5 +1,4 @@
-#ifndef windowsettings_h
-#define windowsettings_h
+#pragma once
 
 #include <string>
 
@@ -12,4 +11,3 @@ struct WindowSettings
 	bool m_bMSAAEnable;
 };
 
-#endif
