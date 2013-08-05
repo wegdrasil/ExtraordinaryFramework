@@ -3,7 +3,7 @@
 Window::Window(HINSTANCE hInstance, WindowSettings* settings)
 {
 	m_hInstance = hInstance; 
-	m_sClassName = "MIRKWOODCLASS";
+	m_sClassName = "ExtraordinaryFrameworkWindowClass";
 	m_Settings = settings;
 }
 
