@@ -19,7 +19,7 @@ public:
 	void CreateSwapChainAndDevice();
 	void CreateInputLayout(D3D11_INPUT_ELEMENT_DESC* inputElementDescs ,ID3DBlob *blob);
 	
-	void CompileShader(LPCWSTR srcFile, LPCSTR entryPoint, LPCSTR profile, ID3DBlob **blob)
+	void CompileShader(LPCWSTR srcFile, LPCSTR entryPoint, LPCSTR profile, ID3DBlob **blob);
 
 private:
 	ID3D11Device* m_pDevice;
