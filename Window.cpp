@@ -1,7 +1,7 @@
 #include "Window.h"
-
+//--------------------------------------------------------------------------------
 Window* gWnd;
-
+//--------------------------------------------------------------------------------
 Window::Window(HINSTANCE hInstance, WindowSettings* settings)
 {
 	gWnd = this;
@@ -10,17 +10,12 @@ Window::Window(HINSTANCE hInstance, WindowSettings* settings)
 	m_sClassName = "ExtraordinaryFrameworkWindowClass";
 	m_Settings = settings;
 }
-
-//namespace
-//{	
-//	Window* gWnd = 0;
-//}
-//
+//--------------------------------------------------------------------------------
 LRESULT CALLBACK Window::WindowProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
 	return gWnd->VWindowProc(hwnd, msg, wParam, lParam);
 }
-
+//--------------------------------------------------------------------------------
 LRESULT Window::VWindowProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
 	switch(msg)
@@ -35,13 +30,13 @@ LRESULT Window::VWindowProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 	}
 	return 0;
 }
-
+//--------------------------------------------------------------------------------
 void Window::Init()
 {
 	RegisterWindowClass();
 	CreateMyWindow();
 }
-
+//--------------------------------------------------------------------------------
 HRESULT Window::RegisterWindowClass()
 {
 	WNDCLASSEX wc;
@@ -68,7 +63,7 @@ HRESULT Window::RegisterWindowClass()
 	}
 	return TRUE;
 }
-
+//--------------------------------------------------------------------------------
 void Window::CreateMyWindow()
 {
 	DWORD GetMyWindowStyle;
@@ -97,7 +92,7 @@ void Window::CreateMyWindow()
 	ShowWindow(m_hWnd, SW_SHOWNORMAL);
 	UpdateWindow(m_hWnd);
 }
-
+//--------------------------------------------------------------------------------
 //Destroys WINAPI window and releases handler.
 void Window::ShutDown()
 {
@@ -105,9 +100,10 @@ void Window::ShutDown()
 		DestroyWindow(m_hWnd);
 	m_hWnd = nullptr;
 }
-
+//--------------------------------------------------------------------------------
 //Displays a modal dialog box. 
 void Window::HelpMessage(const std::string s)
 {
 	MessageBox(m_hWnd, (LPCWSTR)s.c_str(), L"HelpMessage", MB_OK);
 }
+//--------------------------------------------------------------------------------

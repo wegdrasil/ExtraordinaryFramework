@@ -1,10 +1,9 @@
 #pragma once
-
+//--------------------------------------------------------------------------------
 #include <Windows.h>
 #include <string>
-
 #include "WindowSettings.h"
-
+//--------------------------------------------------------------------------------
 class Window
 {
 	HWND m_hWnd;
@@ -33,4 +32,5 @@ private:
 protected:
 	virtual LRESULT VWindowProc(HWND hWnd, UINT uiMsg, WPARAM wParam, LPARAM lParam);	
 };
+//--------------------------------------------------------------------------------
 

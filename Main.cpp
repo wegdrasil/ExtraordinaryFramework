@@ -28,7 +28,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 	settings.m_sCaption = L"eFrame";
 
 	Window window(hInstance, &settings);
-
+	
 	window.Init();
 	Loop();
 	window.ShutDown();
