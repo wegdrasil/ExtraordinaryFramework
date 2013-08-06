@@ -1,6 +1,5 @@
 #pragma once
 //--------------------------------------------------------------------------------
-
 #include <d3d11.h>
 #include <d3dcompiler.h>
 //--------------------------------------------------------------------------------
@@ -17,8 +16,9 @@ public:
 	virtual void Present();
 
 	void CreateSwapChainAndDevice();
-	void CreateInputLayout(D3D11_INPUT_ELEMENT_DESC* inputElementDescs ,ID3DBlob *blob);
-	
+	void CreateInputLayout(ID3D11InputLayout *inputLayout, D3D11_INPUT_ELEMENT_DESC* inputElementDescs, unsigned int numberOfElements, ID3DBlob *blob);
+	void CreateRasterizeState(ID3D11RasterizerState* rasterizerState, D3D11_RASTERIZER_DESC* rsDesc);
+
 	void CompileShader(LPCWSTR srcFile, LPCSTR entryPoint, LPCSTR profile, ID3DBlob **blob);
 
 private:

@@ -136,7 +136,6 @@ void RendererD3D_11::CreateSwapChainAndDevice()
 	m_pContext ->RSSetViewports(1, &vp);
 }
 //--------------------------------------------------------------------------------
-
 void RendererD3D_11::CompileShader(LPCWSTR srcFile, LPCSTR entryPoint, LPCSTR profile, ID3DBlob **blob)
 {
 	UINT flags = D3DCOMPILE_ENABLE_STRICTNESS;
@@ -167,7 +166,16 @@ void RendererD3D_11::CompileShader(LPCWSTR srcFile, LPCSTR entryPoint, LPCSTR pr
 	*blob = shaderBlob;
 }
 //--------------------------------------------------------------------------------
-
+void RendererD3D_11::CreateInputLayout(ID3D11InputLayout *inputLayout, D3D11_INPUT_ELEMENT_DESC* inputElementDescs, unsigned int numberOfElements, ID3DBlob *blob)
+{
+	m_pDevice->CreateInputLayout(inputElementDescs, numberOfElements, blob ->GetBufferPointer(), blob ->GetBufferSize(), &inputLayout);
+}
+//--------------------------------------------------------------------------------
+void RendererD3D_11::CreateRasterizeState(ID3D11RasterizerState* rasterizerState, D3D11_RASTERIZER_DESC* rsDesc)
+{
+	m_pDevice ->CreateRasterizerState(rsDesc, &rasterizerState);
+}
+//--------------------------------------------------------------------------------
 void RendererD3D_11::Present()
 {
 }

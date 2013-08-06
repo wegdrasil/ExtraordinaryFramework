@@ -1,5 +1,6 @@
 #pragma once
 #include "WindowSettings.h"
+
 //Supported graphics APIs
 enum class RendererType
 {

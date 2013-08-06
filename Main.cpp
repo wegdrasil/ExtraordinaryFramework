@@ -1,5 +1,6 @@
 #include <Windows.h>
-#include "Window.h"
+#include "QuadDemo.h"
+
 
 void Loop()
 {
@@ -20,16 +21,16 @@ void Loop()
 
 int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLine, int nCmdShow)
 { 
-	WindowSettings settings;
-	settings.m_bFullScreen = true;
-	settings.m_bMSAAEnable = false;
-	settings.m_iHeight = 600;
-	settings.m_iWidth = 800;
-	settings.m_sCaption = L"eFrame";
-
-	Window window(hInstance, &settings);
+	//Window window(hInstance, &settings);
 	
-	window.Init();
+	QuadDemo* demo = new QuadDemo();
+	//demo->Go(;)
+	demo->m_pWindowSettings->m_bFullScreen = true;
+	demo->m_pWindowSettings->m_bMSAAEnable = false;
+	demo->m_pWindowSettings->m_iHeight = 600;
+	demo->m_pWindowSettings->m_iWidth = 800;
+	demo->m_pWindowSettings->m_sCaption = L"eFrame";
+		 
 	Loop();
-	window.ShutDown();
+	
 }
