@@ -21,16 +21,18 @@ public:
 	HWND GetHWND() { return m_hWnd; }
 	HINSTANCE GetHINSTANCE() { return m_hInstance; }
 
+	// static message handler to put in WNDCLASSEX structure
+	static LRESULT CALLBACK StaticWindowProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
+	
 private:
 	void CreateMyWindow();
 	HRESULT RegisterWindowClass();
 	
-	static LRESULT CALLBACK WindowProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
-	
 	void HelpMessage(const std::string s);
 
 protected:
-	virtual LRESULT VWindowProc(HWND hWnd, UINT uiMsg, WPARAM wParam, LPARAM lParam);	
+	// the real message handler
+	virtual LRESULT CALLBACK VWindowProc(HWND hWnd, UINT uiMsg, WPARAM wParam, LPARAM lParam);	
 };
 //--------------------------------------------------------------------------------
 

@@ -1,6 +1,6 @@
 #pragma once
 #include "WindowSettings.h"
-
+//--------------------------------------------------------------------------------
 //Supported graphics APIs
 enum class RendererType
 {
@@ -8,7 +8,7 @@ enum class RendererType
 	//OGL_43
 	//OGLES_30
 };
-
+//--------------------------------------------------------------------------------
 class IRenderer
 {
 public:
@@ -20,5 +20,5 @@ public:
 
 protected:
 	IRenderer& operator=(const IRenderer&);
-
 };
+//--------------------------------------------------------------------------------

@@ -11,20 +11,19 @@ Window::Window(HINSTANCE hInstance, WindowSettings* settings)
 	m_Settings = settings;
 }
 //--------------------------------------------------------------------------------
-LRESULT CALLBACK Window::WindowProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
+//From this static method we call another method of the class to actually handle the messages.
+LRESULT CALLBACK Window::StaticWindowProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
 	return gWnd->VWindowProc(hwnd, msg, wParam, lParam);
 }
 //--------------------------------------------------------------------------------
-LRESULT Window::VWindowProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
+LRESULT CALLBACK Window::VWindowProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
 	switch(msg)
 	{	
 		case WM_DESTROY:
 			PostQuitMessage(0);
 			break;
-		case WM_MOUSEMOVE:
-		
 		default:
 			return DefWindowProc(hwnd, msg, wParam, lParam);
 	}
@@ -45,7 +44,7 @@ HRESULT Window::RegisterWindowClass()
 
 	wc.cbSize			= sizeof(WNDCLASSEX);
 	wc.style			= CS_HREDRAW | CS_VREDRAW;
-	wc.lpfnWndProc		= WindowProc;                
+	wc.lpfnWndProc		= StaticWindowProc;                         
 	wc.cbClsExtra		= 0;
 	wc.cbWndExtra		= 0;
 	wc.hInstance		= m_hInstance;

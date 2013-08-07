@@ -1,12 +1,12 @@
 #pragma once
-#include <string>
+#include "RendererD3D_11.h"
 //--------------------------------------------------------------------------------
-struct WindowSettings
+class Application
 {
-	int m_iHeight;
-	int m_iWidth;
-	bool m_bFullScreen;
-	std::wstring m_sCaption; 
-	bool m_bMSAAEnable;
+public:
+	Application() {};
+	~Application() {};
+	
+	IRenderer* m_pRenderer11;
 };
 //--------------------------------------------------------------------------------
