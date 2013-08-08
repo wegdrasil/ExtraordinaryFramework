@@ -13,6 +13,7 @@ void QuadDemo::Loop()
 		}
 		else
 		{
+			Render();
 		}
 	}
 }
@@ -33,5 +34,19 @@ LRESULT CALLBACK QuadDemo::VWindowProc(HWND hWnd, UINT uiMsg, WPARAM wParam, LPA
 		}
 	}
 	return Window::VWindowProc(hWnd, uiMsg, wParam, lParam);
+}
+//--------------------------------------------------------------------------------
+void QuadDemo::InitializeRenderer(WindowSettings* windowSettings, HWND handle)
+{
+	m_Renderer.Initialize(windowSettings, handle);
+}
+//--------------------------------------------------------------------------------
+void QuadDemo::Render()
+{
+	float ClearColor[4] = { 1.0f, 0.5f, 0.25f, 1.0f }; 
+	m_Renderer.GetCtx()->ClearRenderTargetView(m_Renderer.GetFramebufferRTV(), ClearColor);
+	m_Renderer.GetCtx()->ClearDepthStencilView(m_Renderer.GetDepthbufferView(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
+	
+	m_Renderer.GetSwapChain()->Present(0,0);
 }
 //--------------------------------------------------------------------------------

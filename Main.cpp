@@ -13,7 +13,9 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 
 	QuadDemo quadDemoApp(hInstance, &settings);
 	quadDemoApp.Init();
+	quadDemoApp.InitializeRenderer(&settings, quadDemoApp.GetHWND());
 	quadDemoApp.Loop();
 	quadDemoApp.ShutDown();
+
 }
 //--------------------------------------------------------------------------------
