@@ -29,19 +29,14 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 
 
 	QuadDemo quadDemoApp(hInstance, &settings);
+
 	quadDemoApp.Init();
+	
+	quadDemoApp.InitializeContent();
 	quadDemoApp.InitializeRenderer(&settings, quadDemoApp.GetHWND());
+	
 	quadDemoApp.Loop();
+	
 	quadDemoApp.ShutDown();
 
-}
-//--------------------------------------------------------------------------------
-
-void Test()
-{
-	Mesh* mesh = new Mesh();
-	 
-	mesh->CreateMeshFromOBJFile("testfile.txt");
-
-	delete mesh;
 }

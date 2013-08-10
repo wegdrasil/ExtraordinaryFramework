@@ -170,9 +170,16 @@ void RendererD3D_11::CreateInputLayout(ID3D11InputLayout *inputLayout, D3D11_INP
 	m_pDevice->CreateInputLayout(inputElementDescs, numberOfElements, blob ->GetBufferPointer(), blob ->GetBufferSize(), &inputLayout);
 }
 //--------------------------------------------------------------------------------
-void RendererD3D_11::CreateRasterizeState(ID3D11RasterizerState* rasterizerState, D3D11_RASTERIZER_DESC* rsDesc)
+void RendererD3D_11::CreateRasterizeState(ID3D11RasterizerState* rasterizerState, D3D11_FILL_MODE fillMode, D3D11_CULL_MODE cullMode, bool counterClockwise, bool depthClipEnable)
 {
-	m_pDevice ->CreateRasterizerState(rsDesc, &rasterizerState);
+	D3D11_RASTERIZER_DESC rsDesc;
+	ZeroMemory(&rsDesc, sizeof(D3D11_RASTERIZER_DESC));
+	rsDesc.FillMode = fillMode;
+	rsDesc.CullMode = cullMode;
+	rsDesc.FrontCounterClockwise = counterClockwise;
+	rsDesc.DepthClipEnable = depthClipEnable;
+
+	m_pDevice ->CreateRasterizerState(&rsDesc, &rasterizerState);
 }
 //--------------------------------------------------------------------------------
 void RendererD3D_11::CreateBuffer(ID3D11Buffer* buffer, UINT byteWidth, D3D11_USAGE usage, UINT bindFlags, const void * initData)
