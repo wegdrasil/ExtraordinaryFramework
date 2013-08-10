@@ -175,6 +175,22 @@ void RendererD3D_11::CreateRasterizeState(ID3D11RasterizerState* rasterizerState
 	m_pDevice ->CreateRasterizerState(rsDesc, &rasterizerState);
 }
 //--------------------------------------------------------------------------------
+void RendererD3D_11::CreateBuffer(ID3D11Buffer* buffer, UINT byteWidth, D3D11_USAGE usage, UINT bindFlags, const void * initData)
+{
+	D3D11_BUFFER_DESC vbDesc;
+	vbDesc.ByteWidth = byteWidth;
+	vbDesc.Usage = usage;
+	vbDesc.BindFlags = bindFlags;
+	vbDesc.CPUAccessFlags = 0;
+	vbDesc.MiscFlags = 0;
+	vbDesc.StructureByteStride = 0;
+
+	D3D11_SUBRESOURCE_DATA vertInitDesc;
+	vertInitDesc.pSysMem = initData;
+
+	m_pDevice->CreateBuffer(&vbDesc, &vertInitDesc, &buffer);
+}
+//--------------------------------------------------------------------------------
 void RendererD3D_11::Present()
 {
 }

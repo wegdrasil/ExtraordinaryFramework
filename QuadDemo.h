@@ -5,6 +5,8 @@
 class QuadDemo : public Window
 {
 	RendererD3D_11 m_Renderer;
+	ID3D11Buffer* m_pVertexBuffer;
+	ID3D11Buffer* m_pIndexBuffer;
 
 public:
 	QuadDemo(HINSTANCE hInstance, WindowSettings *settings) : Window(hInstance, settings) {};

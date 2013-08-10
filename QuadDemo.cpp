@@ -47,6 +47,8 @@ void QuadDemo::Render()
 	m_Renderer.GetCtx()->ClearRenderTargetView(m_Renderer.GetFramebufferRTV(), ClearColor);
 	m_Renderer.GetCtx()->ClearDepthStencilView(m_Renderer.GetDepthbufferView(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
 	
+
+
 	m_Renderer.GetSwapChain()->Present(0,0);
 }
 //--------------------------------------------------------------------------------
