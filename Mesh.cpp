@@ -108,3 +108,40 @@ void Mesh::CreateMeshFromOBJFile(std::string filename)
 	file.close();
 }
 //--------------------------------------------------------------------------------
+void Mesh::GenerateNormals()
+{
+	unsigned int numTris = m_MeshData.m_vIndices.size() / 3;
+	for(unsigned int i = 0; i < numTris; ++i)
+	{
+		unsigned int i0 = m_MeshData.m_vIndices[(i*3)+0];
+		unsigned int i1 = m_MeshData.m_vIndices[(i*3)+1];
+		unsigned int i2 = m_MeshData.m_vIndices[(i*3)+2];
+
+		DirectX::XMVECTOR p0 = DirectX::XMLoadFloat3(&m_MeshData.m_vVertices[i0].mPosition);
+		DirectX::XMVECTOR p1 = DirectX::XMLoadFloat3(&m_MeshData.m_vVertices[i1].mPosition);
+		DirectX::XMVECTOR p2 = DirectX::XMLoadFloat3(&m_MeshData.m_vVertices[i2].mPosition);
+
+		DirectX::XMVECTOR u = DirectX::XMVectorSubtract(p1, p0);
+		DirectX::XMVECTOR v = DirectX::XMVectorSubtract(p2, p0);
+		DirectX::XMVECTOR faceNormal = DirectX::XMVector3Cross(u, v);
+		
+		DirectX::XMVECTOR n0 = DirectX::XMLoadFloat3(&m_MeshData.m_vVertices[i0].mNormal);
+		DirectX::XMVECTOR n1 = DirectX::XMLoadFloat3(&m_MeshData.m_vVertices[i1].mNormal);
+		DirectX::XMVECTOR n2 = DirectX::XMLoadFloat3(&m_MeshData.m_vVertices[i2].mNormal);
+
+		n0 = DirectX::XMVectorAdd(n0, faceNormal);
+		n1 = DirectX::XMVectorAdd(n1, faceNormal);
+		n2 = DirectX::XMVectorAdd(n2, faceNormal);
+
+		DirectX::XMStoreFloat3(&m_MeshData.m_vVertices[i0].mNormal, n0);
+		DirectX::XMStoreFloat3(&m_MeshData.m_vVertices[i1].mNormal, n1);
+		DirectX::XMStoreFloat3(&m_MeshData.m_vVertices[i2].mNormal, n2);
+	}
+
+	for(unsigned int i = 0; i < m_MeshData.m_vVertices.size(); ++i)
+	{
+		DirectX::XMVECTOR normal = DirectX::XMLoadFloat3(&m_MeshData.m_vVertices[i].mNormal);
+		DirectX::XMVector3Normalize(normal);
+		DirectX::XMStoreFloat3(&m_MeshData.m_vVertices[i].mNormal, normal);
+	}
+}

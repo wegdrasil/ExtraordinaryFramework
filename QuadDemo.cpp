@@ -41,6 +41,7 @@ void QuadDemo::InitializeContent()
 {
 	//m_Quad.GenQuad(1.0f);
 	m_Mesh.CreateMeshFromOBJFile("Content\\Models\\head.obj");
+	m_Mesh.GenerateNormals();
 
 	//matrix wvp
 	DirectX::XMMATRIX I = DirectX::XMMatrixIdentity();
