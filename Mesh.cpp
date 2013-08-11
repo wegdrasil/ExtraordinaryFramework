@@ -1,12 +1,12 @@
 #include "Mesh.h"
 //--------------------------------------------------------------------------------
-void Mesh::GenQuad()
+void Mesh::GenQuad(float size)
 {
 	m_MeshData.m_vVertices.resize(4);
-	m_MeshData.m_vVertices[0] = Vertex(-1.0f, 1.0f, 0.0f, 0.0f, 0.0f, -1.0f, 0.0f, 0.0f);
-	m_MeshData.m_vVertices[1] = Vertex(1.0f, 1.0f, 0.0f, 0.0f, 0.0f, -1.0f, 1.0f, 0.0f);
-	m_MeshData.m_vVertices[2] = Vertex(1.0f, -1.0f, 0.0f, 0.0f, 0.0f, -1.0f, 1.0f, 1.0f);
-	m_MeshData.m_vVertices[3] = Vertex(-1.0f, -1.0f, 0.0f, 0.0f, 0.0f, -1.0f, 0.0f, 1.0f);
+	m_MeshData.m_vVertices[0] = Vertex(-size, size, 0.0f, 0.0f, 0.0f, -1.0f, 0.0f, 0.0f);
+	m_MeshData.m_vVertices[1] = Vertex(size, size, 0.0f, 0.0f, 0.0f, -1.0f, 1.0f, 0.0f);
+	m_MeshData.m_vVertices[2] = Vertex(size, -size, 0.0f, 0.0f, 0.0f, -1.0f, 1.0f, 1.0f);
+	m_MeshData.m_vVertices[3] = Vertex(-size, -size, 0.0f, 0.0f, 0.0f, -1.0f, 0.0f, 1.0f);
 
 	m_MeshData.m_vIndices.resize(6);
 	m_MeshData.m_vIndices[0] = 0;
@@ -53,7 +53,8 @@ void Mesh::CreateMeshFromOBJFile(std::string filename)
 				position[i] = atof(p_char);
 				p_char = strtok(nullptr, " ");
 			}
-			std::cout << "position: " << position[0] << " " << position[1] << " "  << position[2] << std::endl;
+			//std::cout << "position: " << position[0] << " " << position[1] << " "  << position[2] << std::endl;
+			m_MeshData.m_vVertices.push_back(Vertex(position[0], position[1], position[2], 0.0f, 0.0f, 0.0f, 0.0f, 0.0f));
 		}
 
 		//Get texture coordinates
@@ -68,7 +69,7 @@ void Mesh::CreateMeshFromOBJFile(std::string filename)
 				texcoord[i] = atof(p_char);
 				p_char = strtok(nullptr, " ");
 			}
-			std::cout << "texcoord: " << texcoord[0] << " " << texcoord[1] <<  std::endl;
+			//std::cout << "texcoord: " << texcoord[0] << " " << texcoord[1] <<  std::endl;
 		}
 
 		//Get vertex normals
@@ -83,7 +84,7 @@ void Mesh::CreateMeshFromOBJFile(std::string filename)
 				normal[i] = atof(p_char);
 				p_char = strtok(nullptr, " ");
 			}
-			std::cout << "normal: " << normal[0] << " " << normal[1] << " "  << normal[2] << std::endl;
+			//std::cout << "normal: " << normal[0] << " " << normal[1] << " "  << normal[2] << std::endl;
 		}
 		
 		if(buffer[0] == 'f')
@@ -94,10 +95,14 @@ void Mesh::CreateMeshFromOBJFile(std::string filename)
 				
 			for(int i = 0; i < 3; i++)
 			{
-				face[i] = atof(p_char);
+				face[i] = atof(p_char) -1;     //tricky bug: obj counts from 1, but programmers count from 0, so we need subtract 1
 				p_char = strtok(nullptr, " ");
 			}
-			std::cout << "face: " << face[0] << " " << face[1] << " "  << face[2] << std::endl;
+			//std::cout << "face: " << face[0] << " " << face[1] << " "  << face[2] << std::endl;
+
+			m_MeshData.m_vIndices.push_back(face[0]);
+			m_MeshData.m_vIndices.push_back(face[1]);
+			m_MeshData.m_vIndices.push_back(face[2]);
 		}
 	}
 	file.close();

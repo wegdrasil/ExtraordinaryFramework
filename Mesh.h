@@ -13,7 +13,7 @@
 struct MeshData
 {
 	std::vector<Vertex> m_vVertices;
-	std::vector<unsigned int> m_vIndices;
+	std::vector<UINT> m_vIndices;
 };
 //--------------------------------------------------------------------------------
 class Mesh
@@ -24,7 +24,7 @@ public:
 
 	MeshData m_MeshData;
 
-	void GenQuad();
+	void GenQuad(float size);
 	void CreateMeshFromOBJFile(std::string filename);
 	void GenerateNormals();
 };

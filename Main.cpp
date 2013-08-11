@@ -11,8 +11,8 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 	
 	WindowSettings settings;
 	settings.m_bFullScreen = true;
-	settings.m_iHeight = 400;
-	settings.m_iWidth = 400;
+	settings.m_iHeight = 600;
+	settings.m_iWidth = 600;
 	settings.m_sCaption = L"QuadDemo";
 	settings.m_bMSAAEnable = false;
 

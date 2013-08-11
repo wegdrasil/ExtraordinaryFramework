@@ -22,7 +22,7 @@ class QuadDemo : public Window
 
 	ID3D11RasterizerState *m_pSolidRS;
 
-	Mesh m_Sphere; 
+	Mesh m_Mesh; 
 	Mesh m_Quad;
 	ConstBuffer<cbPerObjectVS> cbPO_VS;
 	
@@ -30,8 +30,9 @@ class QuadDemo : public Window
 	DirectX::XMFLOAT4X4 m_View;
 	DirectX::XMFLOAT4X4 m_Proj;
 
-	float CamX, CamY;
+	float CamX, CamY, CamZ;
 
+	
 public:
 	QuadDemo(HINSTANCE hInstance, WindowSettings *settings) : Window(hInstance, settings) {};
 
@@ -45,7 +46,7 @@ public:
 	void Update();
 	
 	void SetOrthProjMat(float x);
-	void SetCamera(float x, float y);
+	void SetCamera(float x, float y, float z);
 
 
 	virtual LRESULT CALLBACK VWindowProc(HWND hWnd, UINT uiMsg, WPARAM wParam, LPARAM lParam);
