@@ -15,10 +15,10 @@ public:
 	void Present();
 
 	void CreateSwapChainAndDevice();
-	void CreateInputLayout(ID3D11InputLayout *inputLayout, D3D11_INPUT_ELEMENT_DESC* inputElementDescs, unsigned int numberOfElements, ID3DBlob *blob);
-	void CreateRasterizeState(ID3D11RasterizerState* rasterizerState, D3D11_FILL_MODE fillMode, D3D11_CULL_MODE cullMode, bool counterClockwise, bool depthClipEnable);
+	void CreateInputLayout(ID3D11InputLayout** inputLayout, D3D11_INPUT_ELEMENT_DESC* inputElementDescs, unsigned int numberOfElements, ID3DBlob *blob);
+	void CreateRasterizeState(ID3D11RasterizerState** rasterizerState, D3D11_FILL_MODE fillMode, D3D11_CULL_MODE cullMode, bool counterClockwise, bool depthClipEnable);
 
-	void CreateBuffer(ID3D11Buffer* buffer, UINT byteWidth, D3D11_USAGE usage, UINT bindFlags, const void * initData);
+	void CreateBuffer(ID3D11Buffer** buffer, UINT byteWidth, D3D11_USAGE usage, UINT bindFlags, const void * initData);
 
 	void CompileShader(LPCWSTR srcFile, LPCSTR entryPoint, LPCSTR profile, ID3DBlob **blob);
 

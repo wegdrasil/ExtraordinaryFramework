@@ -1,5 +1,22 @@
 #include "Mesh.h"
 //--------------------------------------------------------------------------------
+void Mesh::GenQuad()
+{
+	m_MeshData.m_vVertices.resize(4);
+	m_MeshData.m_vVertices[0] = Vertex(-1.0f, 1.0f, 0.0f, 0.0f, 0.0f, -1.0f, 0.0f, 0.0f);
+	m_MeshData.m_vVertices[1] = Vertex(1.0f, 1.0f, 0.0f, 0.0f, 0.0f, -1.0f, 1.0f, 0.0f);
+	m_MeshData.m_vVertices[2] = Vertex(1.0f, -1.0f, 0.0f, 0.0f, 0.0f, -1.0f, 1.0f, 1.0f);
+	m_MeshData.m_vVertices[3] = Vertex(-1.0f, -1.0f, 0.0f, 0.0f, 0.0f, -1.0f, 0.0f, 1.0f);
+
+	m_MeshData.m_vIndices.resize(6);
+	m_MeshData.m_vIndices[0] = 0;
+	m_MeshData.m_vIndices[1] = 1;
+	m_MeshData.m_vIndices[2] = 2;
+	m_MeshData.m_vIndices[3] = 0;
+	m_MeshData.m_vIndices[4] = 2;
+	m_MeshData.m_vIndices[5] = 3;
+}
+//--------------------------------------------------------------------------------
 void Mesh::CreateMeshFromOBJFile(std::string filename)
 {
 	const int MAX_CHARS_PER_LINE = 512;
@@ -86,11 +103,3 @@ void Mesh::CreateMeshFromOBJFile(std::string filename)
 	file.close();
 }
 //--------------------------------------------------------------------------------
-//while(p_char != nullptr)
-//{
-//	std::cout << p_char << std::endl;
-//	if(p_char == "v")
-//		continue;
-//
-//	p_char = strtok(nullptr, " ");
-//}

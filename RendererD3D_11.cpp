@@ -165,12 +165,12 @@ void RendererD3D_11::CompileShader(LPCWSTR srcFile, LPCSTR entryPoint, LPCSTR pr
 	*blob = shaderBlob;
 }
 //--------------------------------------------------------------------------------
-void RendererD3D_11::CreateInputLayout(ID3D11InputLayout *inputLayout, D3D11_INPUT_ELEMENT_DESC* inputElementDescs, unsigned int numberOfElements, ID3DBlob *blob)
+void RendererD3D_11::CreateInputLayout(ID3D11InputLayout **inputLayout, D3D11_INPUT_ELEMENT_DESC* inputElementDescs, unsigned int numberOfElements, ID3DBlob *blob)
 {
-	m_pDevice->CreateInputLayout(inputElementDescs, numberOfElements, blob ->GetBufferPointer(), blob ->GetBufferSize(), &inputLayout);
+	m_pDevice->CreateInputLayout(inputElementDescs, numberOfElements, blob ->GetBufferPointer(), blob ->GetBufferSize(), inputLayout);
 }
 //--------------------------------------------------------------------------------
-void RendererD3D_11::CreateRasterizeState(ID3D11RasterizerState* rasterizerState, D3D11_FILL_MODE fillMode, D3D11_CULL_MODE cullMode, bool counterClockwise, bool depthClipEnable)
+void RendererD3D_11::CreateRasterizeState(ID3D11RasterizerState** rasterizerState, D3D11_FILL_MODE fillMode, D3D11_CULL_MODE cullMode, bool counterClockwise, bool depthClipEnable)
 {
 	D3D11_RASTERIZER_DESC rsDesc;
 	ZeroMemory(&rsDesc, sizeof(D3D11_RASTERIZER_DESC));
@@ -179,10 +179,10 @@ void RendererD3D_11::CreateRasterizeState(ID3D11RasterizerState* rasterizerState
 	rsDesc.FrontCounterClockwise = counterClockwise;
 	rsDesc.DepthClipEnable = depthClipEnable;
 
-	m_pDevice ->CreateRasterizerState(&rsDesc, &rasterizerState);
+	m_pDevice ->CreateRasterizerState(&rsDesc, rasterizerState);
 }
 //--------------------------------------------------------------------------------
-void RendererD3D_11::CreateBuffer(ID3D11Buffer* buffer, UINT byteWidth, D3D11_USAGE usage, UINT bindFlags, const void * initData)
+void RendererD3D_11::CreateBuffer(ID3D11Buffer** buffer, UINT byteWidth, D3D11_USAGE usage, UINT bindFlags, const void * initData)
 {
 	D3D11_BUFFER_DESC vbDesc;
 	vbDesc.ByteWidth = byteWidth;
@@ -195,7 +195,7 @@ void RendererD3D_11::CreateBuffer(ID3D11Buffer* buffer, UINT byteWidth, D3D11_US
 	D3D11_SUBRESOURCE_DATA vertInitDesc;
 	vertInitDesc.pSysMem = initData;
 
-	m_pDevice->CreateBuffer(&vbDesc, &vertInitDesc, &buffer);
+	m_pDevice->CreateBuffer(&vbDesc, &vertInitDesc, buffer);
 }
 //--------------------------------------------------------------------------------
 void RendererD3D_11::Present()

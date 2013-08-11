@@ -1,8 +1,13 @@
 #pragma once
 #include "Window.h"
 #include "RendererD3D_11.h"
+#include "ConstantBuffer.h"
 #include "Mesh.h"
-
+//--------------------------------------------------------------------------------
+struct cbPerObjectVS
+{
+	DirectX::XMFLOAT4X4 WorldViewProj;
+};
 //--------------------------------------------------------------------------------
 class QuadDemo : public Window
 {
@@ -18,6 +23,14 @@ class QuadDemo : public Window
 	ID3D11RasterizerState *m_pSolidRS;
 
 	Mesh m_Sphere; 
+	Mesh m_Quad;
+	ConstBuffer<cbPerObjectVS> cbPO_VS;
+	
+	DirectX::XMFLOAT4X4 m_World;
+	DirectX::XMFLOAT4X4 m_View;
+	DirectX::XMFLOAT4X4 m_Proj;
+
+	float CamX, CamY;
 
 public:
 	QuadDemo(HINSTANCE hInstance, WindowSettings *settings) : Window(hInstance, settings) {};
@@ -29,7 +42,12 @@ public:
 	void PrepareRenderer();
 	void Loop();
 	void Render();
+	void Update();
 	
+	void SetOrthProjMat(float x);
+	void SetCamera(float x, float y);
+
+
 	virtual LRESULT CALLBACK VWindowProc(HWND hWnd, UINT uiMsg, WPARAM wParam, LPARAM lParam);
 };
 //--------------------------------------------------------------------------------

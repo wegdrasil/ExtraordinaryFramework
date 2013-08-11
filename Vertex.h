@@ -1,7 +1,7 @@
 #pragma once
 #include <Windows.h>
 #include <DirectXMath.h>
-
+//--------------------------------------------------------------------------------
 struct Vertex
 {
 	Vertex() {};
@@ -12,3 +12,4 @@ struct Vertex
 	DirectX::XMFLOAT3 mNormal;
 	DirectX::XMFLOAT2 mTexCoord;
 };
+//--------------------------------------------------------------------------------
