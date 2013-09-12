@@ -39,9 +39,9 @@ LRESULT CALLBACK QuadDemo::VWindowProc(HWND hWnd, UINT uiMsg, WPARAM wParam, LPA
 //--------------------------------------------------------------------------------
 void QuadDemo::InitializeContent()
 {
-	//m_Quad.GenQuad(1.0f);
-	m_Mesh.CreateMeshFromOBJFile("Content\\Models\\head.obj");
-	m_Mesh.GenerateNormals();
+	m_Mesh.GenQuad(1.0f);
+	//m_Mesh.CreateMeshFromOBJFile("Content\\Models\\head.obj");
+	//m_Mesh.GenerateNormals();
 
 	//matrix wvp
 	DirectX::XMMATRIX I = DirectX::XMMatrixIdentity();
@@ -61,11 +61,10 @@ void QuadDemo::InitializeRenderer(WindowSettings* windowSettings, HWND handle)
 {
 	m_Renderer.Initialize(windowSettings, handle);
 	
-	//m_Renderer.CreateBuffer(&m_pVertexBuffer, sizeof(Vertex) * m_Quad.m_MeshData.m_vVertices.size(), D3D11_USAGE_IMMUTABLE, D3D11_BIND_VERTEX_BUFFER, &m_Quad.m_MeshData.m_vVertices[0]);
-	//m_Renderer.CreateBuffer(&m_pIndexBuffer, sizeof(unsigned int) * m_Quad.m_MeshData.m_vIndices.size(), D3D11_USAGE_IMMUTABLE, D3D11_BIND_INDEX_BUFFER, &m_Quad.m_MeshData.m_vIndices[0]);
-	
-	m_Renderer.CreateBuffer(&m_pVertexBuffer, sizeof(Vertex) * m_Mesh.m_MeshData.m_vVertices.size(), D3D11_USAGE_IMMUTABLE, D3D11_BIND_VERTEX_BUFFER, &m_Mesh.m_MeshData.m_vVertices[0]);
-	m_Renderer.CreateBuffer(&m_pIndexBuffer, sizeof(unsigned int) * m_Mesh.m_MeshData.m_vIndices.size(), D3D11_USAGE_IMMUTABLE, D3D11_BIND_INDEX_BUFFER, &m_Mesh.m_MeshData.m_vIndices[0]);
+	m_Renderer.CreateBuffer(&m_pVertexBuffer, sizeof(Vertex) * m_Mesh.m_MeshData.m_vVertices.size(), 
+		D3D11_USAGE_IMMUTABLE, D3D11_BIND_VERTEX_BUFFER, &m_Mesh.m_MeshData.m_vVertices[0]);
+	m_Renderer.CreateBuffer(&m_pIndexBuffer, sizeof(unsigned int) * m_Mesh.m_MeshData.m_vIndices.size(), 
+		D3D11_USAGE_IMMUTABLE, D3D11_BIND_INDEX_BUFFER, &m_Mesh.m_MeshData.m_vIndices[0]);
 	
 	cbPO_VS.InitConstBuffer(m_Renderer.GetDev());
 
@@ -73,8 +72,8 @@ void QuadDemo::InitializeRenderer(WindowSettings* windowSettings, HWND handle)
 	
 	ID3D10Blob* VertexShaderBlob;
 	ID3D10Blob* PixelShaderBlob;
-	m_Renderer.CompileShader(L"VertexShader.hlsl", "VS", "vs_5_0", &VertexShaderBlob);
-	m_Renderer.CompileShader(L"PixelShader.hlsl", "PS", "ps_5_0", &PixelShaderBlob);
+	m_Renderer.CompileShader(L"QuadVertexShader.hlsl", "VS", "vs_5_0", &VertexShaderBlob);
+	m_Renderer.CompileShader(L"QuadPixelShader.hlsl", "PS", "ps_5_0", &PixelShaderBlob);
 	
 	D3D11_INPUT_ELEMENT_DESC vertexDesc[] =
 	{
@@ -112,25 +111,28 @@ void QuadDemo::Update()
 //--------------------------------------------------------------------------------
 void QuadDemo::Render()
 {
-	float ClearColor[4] = { 0.2f, 0.25f, 0.6f, 1.0f }; 
-	m_Renderer.GetCtx()->ClearRenderTargetView(m_Renderer.GetFramebufferRTV(), ClearColor);
-	m_Renderer.GetCtx()->ClearDepthStencilView(m_Renderer.GetDepthbufferView(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
+	ID3D11DeviceContext* ctx = m_Renderer.GetCtx();
+
+	float ClearColor[4] = { 0.2f, 0.25f, 0.6f, 1.0f };
+
+	ctx->ClearRenderTargetView(m_Renderer.GetFramebufferRTV(), ClearColor);
+	ctx->ClearDepthStencilView(m_Renderer.GetDepthbufferView(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
 	
-	m_Renderer.GetCtx()->IASetInputLayout(m_pInputLayout);
-	m_Renderer.GetCtx()->RSSetState(m_pSolidRS);
+	ctx->IASetInputLayout(m_pInputLayout);
+	ctx->RSSetState(m_pSolidRS);
 	
-	m_Renderer.GetCtx()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+	ctx->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
 	UINT stride = sizeof(Vertex);
 	UINT offset = 0;	
-	m_Renderer.GetCtx()->IASetVertexBuffers(0, 1, &m_pVertexBuffer, &stride, &offset);
-	m_Renderer.GetCtx()->IASetIndexBuffer(m_pIndexBuffer, DXGI_FORMAT_R32_UINT, 0);
+	ctx->IASetVertexBuffers(0, 1, &m_pVertexBuffer, &stride, &offset);
+	ctx->IASetIndexBuffer(m_pIndexBuffer, DXGI_FORMAT_R32_UINT, 0);
 
 	//ctx->PSSetSamplers(0, 1, &StateLinear);
 	//ctx->PSSetShaderResources(0, 1, &texMandrillSRV);
 
-	m_Renderer.GetCtx()->VSSetShader(m_pVertexShader, nullptr, 0);
-	m_Renderer.GetCtx()->PSSetShader(m_pPixelShader, nullptr, 0);
+	ctx->VSSetShader(m_pVertexShader, nullptr, 0);
+	ctx->PSSetShader(m_pPixelShader, nullptr, 0);
 
 	//constant buffer
 	DirectX::XMMATRIX w = DirectX::XMLoadFloat4x4(&m_World);
@@ -140,10 +142,10 @@ void QuadDemo::Render()
 	DirectX::XMStoreFloat4x4(&cbPO_VS.data.WorldViewProj, DirectX::XMMatrixTranspose(v*p));
 	cbPO_VS.UpdateConstBuffer(m_Renderer.GetCtx());
 	ID3D11Buffer *tmp = cbPO_VS.GetBuffer();
-	m_Renderer.GetCtx() ->VSSetConstantBuffers(0, 1, &tmp);
+	ctx->VSSetConstantBuffers(0, 1, &tmp);
 
-	m_Renderer.GetCtx()->DrawIndexed(m_Mesh.m_MeshData.m_vIndices.size(), 0, 0);
-
+	ctx->DrawIndexed(m_Mesh.m_MeshData.m_vIndices.size(), 0, 0);
+	
 	m_Renderer.GetSwapChain()->Present(0,0);
 }
 //--------------------------------------------------------------------------------
@@ -157,7 +159,7 @@ void QuadDemo::SetOrthProjMat(float x)
 
 	//reset viewport
 }
-
+//--------------------------------------------------------------------------------
 void QuadDemo::SetCamera(float _x, float _y, float _z)
 {
 	float x = _z*sinf(_x)*cosf(_y);
@@ -170,4 +172,16 @@ void QuadDemo::SetCamera(float _x, float _y, float _z)
 
 	DirectX::XMMATRIX V = DirectX::XMMatrixLookAtLH(pos, target, up);
 	DirectX::XMStoreFloat4x4(&m_View, V);
+}
+//--------------------------------------------------------------------------------
+void QuadDemo::Quit()
+{
+	m_pPixelShader->Release(); m_pPixelShader = nullptr;
+	m_pVertexShader->Release(); m_pVertexShader = nullptr;
+	m_pInputLayout->Release(); m_pInputLayout = nullptr;
+	m_pSolidRS->Release(); m_pSolidRS = nullptr;
+	m_pIndexBuffer->Release(); m_pIndexBuffer = nullptr;
+	m_pVertexBuffer->Release();m_pVertexBuffer = nullptr;
+
+	m_Renderer.Shutdown();
 }

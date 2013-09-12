@@ -44,6 +44,7 @@ public:
 	void Loop();
 	void Render();
 	void Update();
+	void Quit();
 	
 	void SetOrthProjMat(float x);
 	void SetCamera(float x, float y, float z);

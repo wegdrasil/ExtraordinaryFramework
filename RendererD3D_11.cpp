@@ -204,5 +204,10 @@ void RendererD3D_11::Present()
 //--------------------------------------------------------------------------------
 void RendererD3D_11::Shutdown()
 {
+	m_pDepthStencilView->Release(); m_pDepthStencilView = nullptr;
+	m_pRenderTargetView->Release(); m_pRenderTargetView = nullptr;
+	m_pSwapChain->Release(); m_pSwapChain = nullptr;
+	m_pContext->Release(); m_pContext = nullptr;
+	m_pDevice->Release(); m_pDevice = nullptr;
 }
 //--------------------------------------------------------------------------------

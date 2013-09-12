@@ -14,7 +14,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 	settings.m_iHeight = 600;
 	settings.m_iWidth = 600;
 	settings.m_sCaption = L"QuadDemo";
-	settings.m_bMSAAEnable = false;
+	settings.m_bMSAAEnable = true;
 
 
 	QuadDemo quadDemoApp(hInstance, &settings);
@@ -26,6 +26,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 	
 	quadDemoApp.Loop();
 	
+	quadDemoApp.Quit();
 	quadDemoApp.ShutDown();
 }
 //--------------------------------------------------------------------------------
