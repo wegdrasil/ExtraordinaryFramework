@@ -1,7 +1,7 @@
 #include <Windows.h>
 #include <DirectXMath.h>
 #include <cstring>
-#include "QuadDemo.h"
+#include "AddVectorComputeShaderDemo.h"
 #include "WindowSettings.h"
 #include "Mesh.h"
 //--------------------------------------------------------------------------------
@@ -17,16 +17,18 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 	settings.m_bMSAAEnable = true;
 
 
-	QuadDemo quadDemoApp(hInstance, &settings);
+	AddVecDemo app(hInstance, &settings);
 
-	quadDemoApp.Init();
+	app.Init();
 	
-	quadDemoApp.InitializeContent();
-	quadDemoApp.InitializeRenderer(&settings, quadDemoApp.GetHWND());
+	app.InitializeContent();
+	app.InitializeRenderer(&settings, app.GetHWND());
 	
-	quadDemoApp.Loop();
+	app.Work();
+
+	app.Loop();
 	
-	quadDemoApp.Quit();
-	quadDemoApp.ShutDown();
+	app.Quit();
+	app.ShutDown();
 }
 //--------------------------------------------------------------------------------
