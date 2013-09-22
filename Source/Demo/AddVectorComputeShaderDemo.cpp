@@ -139,7 +139,7 @@ void AddVecDemo::Work()
 	auto ctx = m_Renderer.GetCtx();
 
 	ctx->CSSetShader(m_pComputeShader, nullptr, 0);
-	ctx->Dispatch(256, 1, 1);
+	ctx->Dispatch(64, 1, 1);
 	
 	ctx->CopyResource(m_pOutputTmpBuffer, m_pOutputBuffer);
 	

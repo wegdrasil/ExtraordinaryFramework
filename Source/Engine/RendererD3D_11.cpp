@@ -198,8 +198,32 @@ void RendererD3D_11::CreateBuffer(ID3D11Buffer** buffer, UINT byteWidth, D3D11_U
 	m_pDevice->CreateBuffer(&vbDesc, &vertInitDesc, buffer);
 }
 //--------------------------------------------------------------------------------
-void RendererD3D_11::Present()
+void RendererD3D_11::CreateTextureFromDDSFile(const wchar_t* filename, ID3D11Resource** tex, ID3D11ShaderResourceView** texSRV, ID3D11SamplerState** state)
 {
+	DirectX::CreateDDSTextureFromFile(m_pDevice, filename, tex, texSRV);
+	
+	D3D11_SAMPLER_DESC samplerDesc;
+	samplerDesc.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR;
+	samplerDesc.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;
+	samplerDesc.AddressV = D3D11_TEXTURE_ADDRESS_WRAP;
+	samplerDesc.AddressW = D3D11_TEXTURE_ADDRESS_WRAP;
+	samplerDesc.MipLODBias = 0;
+	samplerDesc.MaxAnisotropy = 1;
+	samplerDesc.ComparisonFunc = D3D11_COMPARISON_NEVER;
+	//samplerDesc.BorderColor[0] = 1.0f;
+	//samplerDesc.BorderColor[1] = 1.0f;
+	//samplerDesc.BorderColor[2] = 1.0f;
+	//samplerDesc.BorderColor[3] = 1.0f;
+	samplerDesc.MinLOD = -3.402823466e+38F; // -FLT_MAX
+	samplerDesc.MaxLOD = 3.402823466e+38F; // FLT_MAX
+
+	m_pDevice->CreateSamplerState(&samplerDesc, state);
+}
+//--------------------------------------------------------------------------------
+void RendererD3D_11::SetTexture(ID3D11ShaderResourceView** texSRV, ID3D11SamplerState** state)
+{
+	m_pContext->PSSetSamplers(0, 1, state);
+	m_pContext->PSSetShaderResources(0, 1, texSRV);
 }
 //--------------------------------------------------------------------------------
 void RendererD3D_11::Shutdown()

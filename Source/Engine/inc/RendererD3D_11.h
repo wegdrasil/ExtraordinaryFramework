@@ -2,6 +2,7 @@
 //--------------------------------------------------------------------------------
 #include <d3d11.h>
 #include <d3dcompiler.h>
+#include "DDSTextureLoader.h"
 #include "WindowSettings.h"
 //--------------------------------------------------------------------------------
 class RendererD3D_11
@@ -21,6 +22,9 @@ public:
 	void CreateBuffer(ID3D11Buffer** buffer, UINT byteWidth, D3D11_USAGE usage, UINT bindFlags, const void * initData);
 
 	void CompileShader(LPCWSTR srcFile, LPCSTR entryPoint, LPCSTR profile, ID3DBlob **blob);
+
+	void CreateTextureFromDDSFile(const wchar_t* filename, ID3D11Resource** tex, ID3D11ShaderResourceView** texSRV, ID3D11SamplerState** state);
+	void SetTexture(ID3D11ShaderResourceView** texSRV, ID3D11SamplerState** state);
 
 	ID3D11Device* GetDev() { return m_pDevice; }
 	ID3D11DeviceContext* GetCtx() { return m_pContext; }
