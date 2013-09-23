@@ -203,17 +203,17 @@ void RendererD3D_11::CreateTextureFromDDSFile(const wchar_t* filename, ID3D11Res
 	DirectX::CreateDDSTextureFromFile(m_pDevice, filename, tex, texSRV);
 	
 	D3D11_SAMPLER_DESC samplerDesc;
-	samplerDesc.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR;
+	samplerDesc.Filter = D3D11_FILTER_ANISOTROPIC;//D3D11_FILTER_MIN_MAG_MIP_LINEAR;
 	samplerDesc.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;
 	samplerDesc.AddressV = D3D11_TEXTURE_ADDRESS_WRAP;
 	samplerDesc.AddressW = D3D11_TEXTURE_ADDRESS_WRAP;
 	samplerDesc.MipLODBias = 0;
-	samplerDesc.MaxAnisotropy = 1;
+	samplerDesc.MaxAnisotropy = 4;
 	samplerDesc.ComparisonFunc = D3D11_COMPARISON_NEVER;
-	//samplerDesc.BorderColor[0] = 1.0f;
-	//samplerDesc.BorderColor[1] = 1.0f;
-	//samplerDesc.BorderColor[2] = 1.0f;
-	//samplerDesc.BorderColor[3] = 1.0f;
+	samplerDesc.BorderColor[0] = 1.0f;
+	samplerDesc.BorderColor[1] = 1.0f;
+	samplerDesc.BorderColor[2] = 1.0f;
+	samplerDesc.BorderColor[3] = 1.0f;
 	samplerDesc.MinLOD = -3.402823466e+38F; // -FLT_MAX
 	samplerDesc.MaxLOD = 3.402823466e+38F; // FLT_MAX
 

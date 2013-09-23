@@ -10,7 +10,6 @@ void main(in float3 iPos : POSITION,
 		  out float2 oTex : TEXCOORD
 		  )
 {
-	oTex = iTex;
 	oPosH = mul(float4(iPos, 1.0f), WorldViewProj);
-	
+	oTex = iTex;
 }

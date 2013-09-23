@@ -1,8 +1,8 @@
 SamplerState samplerState;
 Texture2D tex;
 
-float4 main(in float2 oTex : TEXCOORD) : SV_TARGET
+float4 main(in float4 oPosH : SV_POSITION,
+	        in float2 oTex : TEXCOORD) : SV_TARGET
 {
-	float4 color = tex.Sample(samplerState, oTex);
-	return color;
+	return tex.Sample(samplerState, oTex);
 }
