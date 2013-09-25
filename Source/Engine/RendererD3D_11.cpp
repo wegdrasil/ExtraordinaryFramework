@@ -121,7 +121,7 @@ void RendererD3D_11::CreateSwapChainAndDevice()
 	m_pDevice ->CreateTexture2D(&depthstencilDesc, 0, &depthstencilBuffer);
 	m_pDevice ->CreateDepthStencilView(depthstencilBuffer, 0, &m_pDepthStencilView);
 
-	m_pContext ->OMSetRenderTargets(1, &m_pRenderTargetView, m_pDepthStencilView);
+	SetRenderTarget();
 
 	//viewport
 	D3D11_VIEWPORT vp;
@@ -133,6 +133,11 @@ void RendererD3D_11::CreateSwapChainAndDevice()
 	vp.MaxDepth = 1.0f;
 
 	m_pContext ->RSSetViewports(1, &vp);
+}
+//--------------------------------------------------------------------------------
+void RendererD3D_11::SetRenderTarget()
+{
+	m_pContext->OMSetRenderTargets(1, &m_pRenderTargetView, m_pDepthStencilView);
 }
 //--------------------------------------------------------------------------------
 void RendererD3D_11::CompileShader(LPCWSTR srcFile, LPCSTR entryPoint, LPCSTR profile, ID3DBlob **blob)
@@ -224,6 +229,30 @@ void RendererD3D_11::SetTexture(ID3D11ShaderResourceView** texSRV, ID3D11Sampler
 {
 	m_pContext->PSSetSamplers(0, 1, state);
 	m_pContext->PSSetShaderResources(0, 1, texSRV);
+}
+//--------------------------------------------------------------------------------
+void RendererD3D_11::CreateOffscreenTexture(ID3D11RenderTargetView** offscreenRTV, ID3D11ShaderResourceView** offscreenSRV, ID3D11UnorderedAccessView** offscreenUAV)
+{
+	D3D11_TEXTURE2D_DESC texDesc;
+	texDesc.Width = m_pWindowSettings->m_iWidth;
+	texDesc.Height = m_pWindowSettings->m_iHeight;
+	texDesc.MipLevels = 1;
+	texDesc.ArraySize = 1;
+	texDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
+	texDesc.SampleDesc.Count = 1;
+	texDesc.SampleDesc.Quality = 0;
+	texDesc.Usage = D3D11_USAGE_DEFAULT;
+	texDesc.BindFlags = D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE | D3D11_BIND_UNORDERED_ACCESS;
+	texDesc.CPUAccessFlags = 0;
+	texDesc.MiscFlags = 0;
+
+	ID3D11Texture2D* offscreenTexture = nullptr;
+	m_pDevice->CreateTexture2D(&texDesc, nullptr, &offscreenTexture);
+
+	m_pDevice->CreateShaderResourceView(offscreenTexture, nullptr, offscreenSRV);
+	m_pDevice->CreateRenderTargetView(offscreenTexture, nullptr, offscreenRTV);
+	m_pDevice->CreateUnorderedAccessView(offscreenTexture, nullptr, offscreenUAV);
+
 }
 //--------------------------------------------------------------------------------
 void RendererD3D_11::Shutdown()

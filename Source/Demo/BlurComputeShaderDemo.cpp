@@ -90,7 +90,8 @@ void BlurDemo::InitializeRenderer(WindowSettings* windowSettings, HWND handle)
 	PixelShaderBlob->Release(); PixelShaderBlob = nullptr;
 
 	m_Renderer.CreateTextureFromDDSFile(L"Assets\\Textures\\mandrill.dds", &m_pTex, &m_pTexSRV, &m_pSamplerState);
-	
+
+	m_Renderer.CreateOffscreenTexture(&m_pOffscreenRTV, &m_pOffscreenSRV, &m_pOffscreenUAV);
 }
 //--------------------------------------------------------------------------------
 void BlurDemo::Update()
@@ -118,7 +119,12 @@ void BlurDemo::Render()
 
 	float ClearColor[4] = { 0.2f, 0.25f, 0.6f, 1.0f };
 
-	ctx->ClearRenderTargetView(m_Renderer.GetFramebufferRTV(), ClearColor);
+
+	////////////////////////////////////////////////////////////////////////////////
+	//Rendering to offscreen texture
+	ctx->OMSetRenderTargets(1, &m_pOffscreenRTV, m_Renderer.GetDepthbufferView());
+
+	ctx->ClearRenderTargetView(m_pOffscreenRTV, ClearColor);
 	ctx->ClearDepthStencilView(m_Renderer.GetDepthbufferView(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
 
 	ctx->IASetInputLayout(m_pInputLayout);
@@ -148,6 +154,19 @@ void BlurDemo::Render()
 	ctx->VSSetConstantBuffers(0, 1, &tmp);
 
 	ctx->DrawIndexed(m_Mesh.m_MeshData.m_vIndices.size(), 0, 0);
+	////////////////////////////////////////////////////////////////////////////////
+	//Render as usual
+	float ClearColor2[4] = { 0.0f, 0.0f, 0.0f, 1.0f };
+	m_Renderer.SetRenderTarget();
+
+	ctx->ClearRenderTargetView(m_Renderer.GetFramebufferRTV(), ClearColor2);
+	ctx->ClearDepthStencilView(m_Renderer.GetDepthbufferView(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
+
+	ctx->PSSetShaderResources(0, 1, &m_pOffscreenSRV);
+	ctx->PSSetShader(m_pPixelShader, nullptr, 0);
+
+	ctx->DrawIndexed(m_Mesh.m_MeshData.m_vIndices.size(), 0, 0);
+	////////////////////////////////////////////////////////////////////////////////
 
 	m_Renderer.GetSwapChain()->Present(0, 0);
 }
@@ -176,6 +195,8 @@ void BlurDemo::SetCamera(float _x, float _y, float _z)
 	DirectX::XMMATRIX V = DirectX::XMMatrixLookAtLH(pos, target, up);
 	DirectX::XMStoreFloat4x4(&m_View, V);
 }
+//--------------------------------------------------------------------------------
+
 //--------------------------------------------------------------------------------
 void BlurDemo::Quit()
 {

@@ -16,6 +16,7 @@ public:
 	void Present();
 
 	void CreateSwapChainAndDevice();
+	void SetRenderTarget();
 	void CreateInputLayout(ID3D11InputLayout** inputLayout, D3D11_INPUT_ELEMENT_DESC* inputElementDescs, unsigned int numberOfElements, ID3DBlob *blob);
 	void CreateRasterizeState(ID3D11RasterizerState** rasterizerState, D3D11_FILL_MODE fillMode, D3D11_CULL_MODE cullMode, bool counterClockwise, bool depthClipEnable);
 
@@ -25,6 +26,8 @@ public:
 
 	void CreateTextureFromDDSFile(const wchar_t* filename, ID3D11Resource** tex, ID3D11ShaderResourceView** texSRV, ID3D11SamplerState** state);
 	void SetTexture(ID3D11ShaderResourceView** texSRV, ID3D11SamplerState** state);
+
+	void CreateOffscreenTexture(ID3D11RenderTargetView** offscreenRTV, ID3D11ShaderResourceView** offscreenSRV,	ID3D11UnorderedAccessView** offscreenUAV);
 
 	ID3D11Device* GetDev() { return m_pDevice; }
 	ID3D11DeviceContext* GetCtx() { return m_pContext; }

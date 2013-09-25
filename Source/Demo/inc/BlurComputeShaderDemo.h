@@ -37,6 +37,11 @@ class BlurDemo : public Window
 
 	float CamX, CamY, CamZ;
 
+	//
+	ID3D11RenderTargetView* m_pOffscreenRTV;
+	ID3D11ShaderResourceView* m_pOffscreenSRV;
+	ID3D11UnorderedAccessView* m_pOffscreenUAV;
+
 public:
 	BlurDemo(HINSTANCE hInstance, WindowSettings *settings) : Window(hInstance, settings) {};
 
@@ -45,6 +50,7 @@ public:
 	void InitializeRenderer(WindowSettings* windowSettings, HWND handle);
 	void InitializeContent();
 	void PrepareRenderer();
+	
 	void Loop();
 	void Render();
 	void Update();
