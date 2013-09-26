@@ -42,6 +42,12 @@ class BlurDemo : public Window
 	ID3D11ShaderResourceView* m_pOffscreenSRV;
 	ID3D11UnorderedAccessView* m_pOffscreenUAV;
 
+	ID3D11ShaderResourceView* m_pBluredTexSRV;
+	ID3D11UnorderedAccessView* m_pBluredTexUAV;
+
+	ID3D11ComputeShader* m_pHorizontalBlurCS;
+	ID3D11ComputeShader* m_pVerticalBlurCS;
+
 public:
 	BlurDemo(HINSTANCE hInstance, WindowSettings *settings) : Window(hInstance, settings) {};
 
@@ -60,6 +66,8 @@ public:
 	void SetCamera(float x, float y, float z);
 	
 	virtual LRESULT CALLBACK VWindowProc(HWND hWnd, UINT uiMsg, WPARAM wParam, LPARAM lParam);
+
+	void PrepareBlurTexture();
 };
 
 //--------------------------------------------------------------------------------
